@@ -1,0 +1,22 @@
+{
+    "FunctionName": "NJS-App-Seguro-Cotacao-ConsultaProposta",
+    "Projeto": "NJS-App-Seguro-Cotacao",
+    "UsaVPC": "Sim",
+    "Release": "1.0.0",
+
+    "Configuration": {
+        "Runtime": "nodejs12.x",
+        "Handler": "index-consultar-proposta.execute",
+        "Description": "Consulta proposta",
+        "Timeout": 30,
+        "MemorySize": 256
+    },
+    "ReservedConcurrentExecutions": {
+        "ReservedConcurrentExecutions": 100
+    },
+    "Tags": {
+        "Tags": {
+            "obs": "Consulta proposta"
+            }
+    }
+}

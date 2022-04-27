@@ -1,0 +1,22 @@
+{
+    "FunctionName": "NJS-App-Seguro-Cotacao-SolicitarCotacao",
+    "Projeto": "NJS-App-Seguro-Cotacao",
+    "UsaVPC": "Nao",
+    "Release": "1.0.3",
+
+    "Configuration": {
+        "Runtime": "nodejs12.x",
+        "Handler": "index-solicitar-cotacao.execute",
+        "Description": "Solicitar Cotacao",
+        "Timeout": 30,
+        "MemorySize": 256
+    },
+    "ReservedConcurrentExecutions": {
+        "ReservedConcurrentExecutions": 100
+    },
+    "Tags": {
+        "Tags": {
+            "obs": "Solicitar Cotacao"
+            }
+    }
+}

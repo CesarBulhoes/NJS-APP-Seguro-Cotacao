@@ -1,0 +1,39 @@
+parameters:
+  - name: operacao
+    displayName: Operação
+    type: string
+    default: 'configuracao, codigo, trigger, concurrency, sqs'
+  - name: arquivo
+    displayName: Arquivo
+    type: string
+    default: ''
+  - name: release
+    displayName: Release
+    default: ' '
+    type: string
+  - name: versionar
+    displayName: Versionar
+    type: boolean
+    default: false
+
+name: $(rev:rrrr)-${{ parameters.release }}
+
+trigger: none
+
+variables:
+  - group: pipelines_variable_group
+
+resources:
+  repositories:
+    - repository: templates-pipelines
+      type: git
+      name: ALM/templates-pipelines
+      ref: refs/heads/master
+
+stages:
+  - template: TPS/TasksGroups/pipeline-lambda.yml@templates-pipelines
+    parameters:
+      operacao: ${{ parameters.operacao }}
+      arquivo: ${{ parameters.arquivo }}
+      release: ${{ parameters.release }}
+      versionar: ${{ parameters.versionar }}

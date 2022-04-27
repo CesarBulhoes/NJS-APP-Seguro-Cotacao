@@ -1,0 +1,32 @@
+{
+    "FunctionName": "NJS-App-Seguro-Cotacao-AtualizarCotacao",
+    "Projeto": "NJS-App-Seguro-Cotacao",
+    "UsaVPC": "Nao",
+    "Release": "1.0.2",
+
+    "Configuration": {
+        "Runtime": "nodejs12.x",
+        "Handler": "index-atualizar-cotacao.execute",
+        "Description": "Atualizar status da cotacao",
+        "Timeout": 30,
+        "MemorySize": 256,
+        "Environment": {
+            "Variables": {
+                "LOG_LEVEL" : "ERROR"
+            }
+        }
+    },
+    "ReservedConcurrentExecutions": {
+        "ReservedConcurrentExecutions": 100
+    },
+    "Tags": {
+        "Tags": {
+            "obs": "Atualizar status da cotacao"
+            }
+    },
+    "SQS_Trigger": {
+        "EventSourceArn": "arn:aws:sqs:sa-east-1:#awsId:SINCRONIZA_OFERTAS_COTACAO_SEGURO",
+        "Enabled": true,
+        "BatchSize": 1
+    }
+}

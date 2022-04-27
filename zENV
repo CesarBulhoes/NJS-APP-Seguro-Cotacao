@@ -1,0 +1,4 @@
+export FILA_COTACAO_SEGUROS_QUEUE_URL=https://sqs.sa-east-1.amazonaws.com/289150938583/testOfMine
+export AWS_REGION=sa-east-1
+export DYNAMODB_ENDPOINT=arn:aws:dynamodb:sa-east-1:289150938583:table/APP-SeguroCotacao
+export NOME_DA_TABELA_DE_COTACAO=APP-SeguroCotacao

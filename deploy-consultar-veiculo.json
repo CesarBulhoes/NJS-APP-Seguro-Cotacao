@@ -1,0 +1,22 @@
+{
+    "FunctionName": "NJS-App-Seguro-Cotacao-ConsultaVeiculo",
+    "Projeto": "NJS-App-Seguro-Cotacao",
+    "UsaVPC": "Nao",
+    "Release": "1.0.2",
+
+    "Configuration": {
+        "Runtime": "nodejs12.x",
+        "Handler": "index-consulta-veiculo.execute",
+        "Description": "Consulta Veiculo",
+        "Timeout": 30,
+        "MemorySize": 256
+    },
+    "ReservedConcurrentExecutions": {
+        "ReservedConcurrentExecutions": 100
+    },
+    "Tags": {
+        "Tags": {
+            "obs": "Consulta Veiculo"
+            }
+    }
+}

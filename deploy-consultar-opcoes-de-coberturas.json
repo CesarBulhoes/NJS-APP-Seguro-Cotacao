@@ -1,0 +1,22 @@
+{
+    "FunctionName": "NJS-App-Seguro-Cotacao-ConsultaOpcoesDeCoberturas",
+    "Projeto": "NJS-App-Seguro-Cotacao",
+    "UsaVPC": "Nao",
+    "Release": "1.0.0",
+
+    "Configuration": {
+        "Runtime": "nodejs12.x",
+        "Handler": "index-consultar-opcoes-de-coberturas.execute",
+        "Description": "Consulta Opcoes de Cobertura",
+        "Timeout": 30,
+        "MemorySize": 256
+    },
+    "ReservedConcurrentExecutions": {
+        "ReservedConcurrentExecutions": 100
+    },
+    "Tags": {
+        "Tags": {
+            "obs": "Consulta Opcoes de Cobertura"
+            }
+    }
+}

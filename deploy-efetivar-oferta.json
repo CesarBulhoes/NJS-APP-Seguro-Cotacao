@@ -1,0 +1,22 @@
+{
+    "FunctionName": "NJS-App-Seguro-Cotacao-EfetivaOferta",
+    "Projeto": "NJS-App-Seguro-Cotacao",
+    "UsaVPC": "Nao",
+    "Release": "1.0.0",
+
+    "Configuration": {
+        "Runtime": "nodejs12.x",
+        "Handler": "index-efetivar-oferta.execute",
+        "Description": "Efetivar oferta",
+        "Timeout": 30,
+        "MemorySize": 256
+    },
+    "ReservedConcurrentExecutions": {
+        "ReservedConcurrentExecutions": 100
+    },
+    "Tags": {
+        "Tags": {
+            "obs": "Efetivar oferta"
+            }
+    }
+}

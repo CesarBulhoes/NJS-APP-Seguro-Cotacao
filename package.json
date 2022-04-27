@@ -1,0 +1,39 @@
+{
+  "name": "njs-app-seguro-atualizalead",
+  "version": "1.0.1",
+  "description": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --color --runInBand --silent",
+    "test-unit": "npm test -- -c jest-unit-config.js",
+    "test-unit-coverage": "npm test -- --coverage -c jest-unit-config.js",
+    "pretest-integration": "node migrations/criar-cotacao.js start",
+    "test-integration": "npm test -- -c jest-integration-config.js",
+    "posttest-integration": "node migrations/criar-cotacao.js undo",
+    "lint": "npx eslint .",
+    "start-dynamodb": "docker compose up",
+    "stop-dynamodb": "docker compose down",
+    "migrate-criar-cotacao": "node migrations/criar-cotacao.js start"
+  },
+  "author": "Semparar",
+  "license": "SemParar",
+  "devDependencies": {
+    "eslint": "^8.9.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-import-helpers": "^1.2.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
+    "jest": "^27.5.1",
+    "prettier": "^2.5.1"
+  },
+  "dependencies": {
+    "@hapi/joi-date": "^2.0.1",
+    "aws-sdk": "^2.1074.0",
+    "axios": "^0.26.1",
+    "joi": "^17.6.0",
+    "libStpInvoke": "2.*",
+    "object-mapper": "^6.2.0"
+  }
+}
