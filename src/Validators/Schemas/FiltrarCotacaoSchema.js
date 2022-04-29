@@ -1,6 +1,4 @@
 const Joi = require('joi');
-const JoiDate = require('@hapi/joi-date');
-const joiDate = Joi.extend(JoiDate);
 
 function isJsonString(str) {
   try {
@@ -11,7 +9,7 @@ function isJsonString(str) {
   return true;
 }
 
-const ConsultarCotacaoSchema = Joi.object({
+const FiltrarCotacaoSchema = Joi.object({
   cpf: Joi.string(),
   cepPernoite: Joi.string(),
   nome: Joi.string(),
@@ -27,8 +25,9 @@ const ConsultarCotacaoSchema = Joi.object({
     if (!isJsonString(value)) {
       return helpers.error('any.invalid');
     }
+
     return value;
   })
 });
 
-module.exports = ConsultarCotacaoSchema;
+module.exports = FiltrarCotacaoSchema;

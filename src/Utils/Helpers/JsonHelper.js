@@ -7,12 +7,3 @@ exports.isEmpty = (obj) => {
 
   return JSON.stringify(obj) === JSON.stringify({});
 };
-
-exports.pegarChavesNaoVazias = (obj) => {
-  let atributosValidos = {};
-  Object.keys(obj).forEach((key) => {
-    if (obj[key]) atributosValidos[key] = obj[key];
-  });
-
-  return atributosValidos;
-};

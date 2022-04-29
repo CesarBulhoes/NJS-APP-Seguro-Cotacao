@@ -79,55 +79,64 @@ exports.filtrar = async ({
   pagina = null,
   limite = 10
 } = {}) => {
-  let filtro = {
-    query: [],
-    equal: [],
-    contains: [],
-    contains_nested: [],
-    contains_array: [],
-    between: [],
-    page: [{ pagina }],
-    limit: [{ limite }],
-    table: [{ NOME_DA_TABELA_DE_COTACAO }]
-  };
+  try {
+    let filtro = {
+      query: [],
+      equal: [],
+      contains: [],
+      contains_nested: [],
+      contains_array: [],
+      between: [],
+      page: [{ pagina }],
+      limit: [{ limite }],
+      table: [{ NOME_DA_TABELA_DE_COTACAO }]
+    };
 
-  if (cpf) {
-    filtro['query'].push({ cpf });
-    if (statusCotacao) filtro['equal'].push({ statusCotacao });
-  } else if (statusCotacao) {
-    filtro['query'].push({ statusCotacao });
-    if (cpf) filtro['equal'].push({ cpf });
+    if (cpf) {
+      filtro['query'].push({ cpf });
+      if (statusCotacao) filtro['equal'].push({ statusCotacao });
+    } else if (statusCotacao) {
+      filtro['query'].push({ statusCotacao });
+      if (cpf) filtro['equal'].push({ cpf });
+    }
+
+    if (cepPernoite) filtro['equal'].push({ cepPernoite });
+
+    if (nome) filtro['contains'].push({ nome });
+
+    if (dataInicio && dataFim)
+      filtro['between'].push({
+        dataInicio: new Date(dataInicio).toISOString().split('T')[0] + 'T00:00:00.000Z',
+        dataFim: new Date(dataFim).toISOString().split('T')[0] + 'T23:59:99.999Z',
+        column: 'dataCriacao'
+      });
+
+    if (modelo) filtro['contains_nested'].push({ path: ['veiculo', 'modelo'], modelo: modelo.toUpperCase() });
+
+    if (placa) filtro['contains_nested'].push({ path: ['veiculo', 'placa'], placa: placa.toUpperCase() });
+
+    if (provedores?.length) filtro['contains_array'].push({ provedores });
+
+    const parametros = DynamodbHelper.makeDynamicQueryGlobalSecondaryParams(filtro);
+
+    let resposta = {},
+      total = 0;
+
+    if (cpf || statusCotacao) {
+      total = await DYNAMODB_DOCUMENT_CLIENT.query(DynamodbHelper.getTotalQueryParams({ ...parametros })).promise();
+      resposta = await DYNAMODB_DOCUMENT_CLIENT.query({ ...parametros }).promise();
+    } else {
+      total = await DYNAMODB_DOCUMENT_CLIENT.scan(DynamodbHelper.getTotalQueryParams({ ...parametros })).promise();
+      resposta = await DYNAMODB_DOCUMENT_CLIENT.scan({ ...parametros }).promise();
+    }
+
+    return {
+      itens: resposta.Items,
+      listados: resposta.Items.length,
+      total: total.Count,
+      proximaPagina: JSON.stringify(resposta.LastEvaluatedKey)
+    };
+  } catch (err) {
+    throw err;
   }
-
-  if (cepPernoite) filtro['equal'].push({ cepPernoite });
-
-  if (nome) filtro['contains'].push({ nome });
-
-  if (dataInicio && dataFim) filtro['between'].push({ dataInicio, dataFim, column: 'dataCriacao' });
-
-  if (modelo) filtro['contains_nested'].push({ path: ['veiculo', 'modelo'], modelo });
-
-  if (placa) filtro['contains_nested'].push({ path: ['veiculo', 'placa'], placa });
-
-  if (provedores?.length) filtro['contains_array'].push({ provedores });
-
-  const parametros = DynamodbHelper.makeDynamicQueryGlobalSecondaryParams(filtro);
-
-  let resposta = {},
-    total = 0;
-
-  if (cpf || statusCotacao) {
-    total = await DYNAMODB_DOCUMENT_CLIENT.query(DynamodbHelper.getTotalQueryParams({ ...parametros })).promise();
-    resposta = await DYNAMODB_DOCUMENT_CLIENT.query({ ...parametros }).promise();
-  } else {
-    total = await DYNAMODB_DOCUMENT_CLIENT.scan(DynamodbHelper.getTotalQueryParams({ ...parametros })).promise();
-    resposta = await DYNAMODB_DOCUMENT_CLIENT.scan({ ...parametros }).promise();
-  }
-
-  return {
-    itens: resposta.Items,
-    listados: resposta.Items.length,
-    total: total.Count,
-    proximaPagina: JSON.stringify(resposta.LastEvaluatedKey)
-  };
 };

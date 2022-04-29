@@ -74,7 +74,7 @@ makeDynamicQueryGlobalSecondaryParams(filtro)
 */
 
 exports.makeDynamicQueryGlobalSecondaryParams = (payload) => {
-  if (!payload) throw new MissingParamError('payload');
+  if (!payload || JsonHelper.isEmpty(payload)) throw new MissingParamError('payload');
 
   let params = {
     ExpressionAttributeValues: {},
@@ -102,8 +102,8 @@ exports.makeDynamicQueryGlobalSecondaryParams = (payload) => {
         params.KeyConditionExpression = `#${name1} = :${name1}`;
       } else if (key == 'between') {
         delete params.ExpressionAttributeNames[`#${name1}`];
-        params.ExpressionAttributeValues[`:${name1}`] = new Date(payload[key][i][name1]).toISOString();
-        params.ExpressionAttributeValues[`:${name2}`] = new Date(payload[key][i][name2]).toISOString();
+        params.ExpressionAttributeValues[`:${name1}`] = payload[key][i][name1];
+        params.ExpressionAttributeValues[`:${name2}`] = payload[key][i][name2];
         params.ExpressionAttributeNames[`#${payload[key][i][column]}`] = `${payload[key][i][column]}`;
         params.FilterExpression = params.FilterExpression
           ? params.FilterExpression + ` and #${payload[key][i][column]} BETWEEN :${name1} and :${name2}`
@@ -113,13 +113,13 @@ exports.makeDynamicQueryGlobalSecondaryParams = (payload) => {
         delete params.ExpressionAttributeValues[`:${name1}`];
         delete params.ExpressionAttributeNames[`#${name1}`];
       } else if (key == 'limit') {
-        params.Limit = payload[key][i][name1];
         delete params.ExpressionAttributeValues[`:${name1}`];
         delete params.ExpressionAttributeNames[`#${name1}`];
+        if (payload[key][i][name1]) params.Limit = payload[key][i][name1];
       } else if (key == 'table') {
-        params.TableName = payload[key][i][name1];
         delete params.ExpressionAttributeValues[`:${name1}`];
         delete params.ExpressionAttributeNames[`#${name1}`];
+        if (payload[key][i][name1]) params.TableName = payload[key][i][name1];
       } else if (key == 'contains_nested') {
         delete params.ExpressionAttributeValues[`:${name1}`];
         delete params.ExpressionAttributeNames[`#${name1}`];
@@ -130,7 +130,7 @@ exports.makeDynamicQueryGlobalSecondaryParams = (payload) => {
         });
 
         params.ExpressionAttributeNames[`#${name2}`] = `${name2}`;
-        params.ExpressionAttributeValues[`:${name2}`] = payload[key][i][name2].toUpperCase();
+        params.ExpressionAttributeValues[`:${name2}`] = payload[key][i][name2];
         params.FilterExpression = params.FilterExpression
           ? params.FilterExpression + ` and contains(${expName}, :${name2})`
           : ` contains(${expName}, :${name2})`;
@@ -138,7 +138,7 @@ exports.makeDynamicQueryGlobalSecondaryParams = (payload) => {
         delete params.ExpressionAttributeValues[`:${name1}`];
         let condition = [];
         for (let j = 0; j < payload[key][i][name1].length; j++) {
-          params.ExpressionAttributeValues[`:${name1}${j}`] = payload[key][i][name1][j].toUpperCase();
+          params.ExpressionAttributeValues[`:${name1}${j}`] = payload[key][i][name1][j];
           condition.push(`contains(#${name1}, :${name1}${j})`);
         }
 
@@ -156,10 +156,12 @@ exports.makeDynamicQueryGlobalSecondaryParams = (payload) => {
   return params;
 };
 
-exports.getTotalQueryParams = (parametros) => {
-  if (parametros.Limit) delete parametros.Limit;
-  if (parametros.ExclusiveStartKey) delete parametros.ExclusiveStartKey;
+exports.getTotalQueryParams = (payload) => {
+  if (!payload || JsonHelper.isEmpty(payload)) throw new MissingParamError('payload');
 
-  parametros.Select = 'COUNT';
-  return parametros;
+  if (payload.Limit) delete payload.Limit;
+  if (payload.ExclusiveStartKey) delete payload.ExclusiveStartKey;
+
+  payload.Select = 'COUNT';
+  return payload;
 };

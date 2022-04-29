@@ -41,8 +41,8 @@ exports.filtrar = async (data) => {
 
     resposta.itens = serializeLista(resposta.itens);
 
-    resposta.itens.forEach((el) => console.log(JSON.stringify(el), '\n'));
-    console.log({ listados: resposta.listados, total: resposta.total, proximaPagina: resposta.proximaPagina });
+    // resposta.itens.forEach((el) => console.log(JSON.stringify(el), '\n'));
+    // console.log({ listados: resposta.listados, total: resposta.total, proximaPagina: resposta.proximaPagina });
     return HttpResponse.ok(resposta);
   } catch (erro) {
     consoleStp.error(erro);
