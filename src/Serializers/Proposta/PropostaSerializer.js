@@ -51,7 +51,8 @@ const serialize = ({
   nomeProvedor,
   coberturas,
   dataCriacao,
-  dataAtualizacao
+  dataAtualizacao,
+  pdf
 }) => {
   ordenarCoberturas(coberturas);
 
@@ -81,7 +82,8 @@ const serialize = ({
     nomeProvedor,
     coberturas,
     dataCriacao,
-    dataAtualizacao
+    dataAtualizacao,
+    pdf
   };
 };
 

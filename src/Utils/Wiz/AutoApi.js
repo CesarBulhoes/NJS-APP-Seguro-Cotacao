@@ -9,6 +9,7 @@ const URL_SUBMETER_COTACAO = 'api/v1.0/quotation';
 const URL_BUSCAR_VEICULO = 'api/v1.0/common/vehicles/search';
 const URL_CUNSULTAR_OFERTA = 'api/v1.0/offer';
 const URL_EFETIVAR_OFERTA = 'api/v1.0/proposal';
+const URL_PDF_Proposta = 'api/v1.0/proposal/[idProposta]/pdf';
 
 exports.buscarOpcoesDeCobertura = async (idOferta) => {
   if (!idOferta) throw new MissingParamError('idOferta');
@@ -75,6 +76,18 @@ exports.efetivarOferta = async ({ offerId, ...payload }) => {
 
   try {
     const result = await WizAutoHttp.put(`${URL_EFETIVAR_OFERTA}/${offerId}`, payload);
+    return result.data;
+  } catch (erro) {
+    consoleStp.error(`Erro API externa: ${errorClient(erro)}`);
+    throw new Error('Erro de integração com o parceiro');
+  }
+};
+
+exports.consultarPdfProposta = async ({ idProposta }) => {
+  if (!idProposta) throw new MissingParamError('idProposta');
+
+  try {
+    const result = await WizAutoHttp.get(URL_PDF_Proposta.replace('[idProposta]', idProposta));
     return result.data;
   } catch (erro) {
     consoleStp.error(`Erro API externa: ${errorClient(erro)}`);

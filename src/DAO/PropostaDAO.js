@@ -1,7 +1,9 @@
+const axios = require('axios').default;
 const { NOME_DA_TABELA_DE_PROPOSTA } = require('../Config/Env');
 const { DYNAMODB_DOCUMENT_CLIENT } = require('../Config/RecursosAWS');
 const { MissingParamError } = require('../Utils/Errors');
 const { DynamodbHelper } = require('../Utils/Helpers');
+const { consultarPdfProposta } = require('../Utils/Wiz/AutoApi');
 
 exports.registrar = async (data = {}) => {
   if (!data.NRC) throw new MissingParamError('NRC');
@@ -47,4 +49,29 @@ exports.listar = async (data) => {
 
   const resposta = await DYNAMODB_DOCUMENT_CLIENT.scan(parametros).promise();
   return resposta.Items;
+};
+
+exports.salvarPdf = async ({ NRC, idProposta, url, dataExpiracao }) => {
+  const parametros = {
+    TableName: NOME_DA_TABELA_DE_PROPOSTA,
+    Key: { NRC, idProposta },
+    UpdateExpression: `set #pdf = :pdf`,
+    ExpressionAttributeValues: {
+      ':pdf': {
+        url: url,
+        dataExpiracao: dataExpiracao
+      }
+    },
+    ExpressionAttributeNames: {
+      '#pdf': 'pdf'
+    }
+  };
+
+  const resposta = await DYNAMODB_DOCUMENT_CLIENT.update(parametros).promise();
+
+  return resposta;
+};
+
+exports.consultarPdf = async ({ idProposta }) => {
+  return await consultarPdfProposta({ idProposta });
 };
