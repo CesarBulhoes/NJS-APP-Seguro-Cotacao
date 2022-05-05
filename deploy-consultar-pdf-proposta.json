@@ -1,0 +1,22 @@
+{
+  "FunctionName": "NJS-App-Seguro-Cotacao-ConsultaPdfProposta",
+  "Projeto": "NJS-App-Seguro-Cotacao",
+  "UsaVPC": "Nao",
+  "Release": "1.0.0",
+
+  "Configuration": {
+    "Runtime": "nodejs12.x",
+    "Handler": "index-consultar-pdf-proposta.execute",
+    "Description": "Consulta a url para download do PDF da Proposta e atualiza o registro na tabela de Propostas",
+    "Timeout": 30,
+    "MemorySize": 256
+  },
+  "ReservedConcurrentExecutions": {
+    "ReservedConcurrentExecutions": 100
+  },
+  "Tags": {
+    "Tags": {
+      "obs": "Consulta a url para download do PDF da Proposta e atualiza o registro na tabela de Propostas"
+    }
+  }
+}

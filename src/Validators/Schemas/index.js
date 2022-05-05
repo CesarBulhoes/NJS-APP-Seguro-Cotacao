@@ -5,6 +5,7 @@ const ConsultarVeiculoSchema = require('./ConsultarVeiculoSchema');
 const EfetivarOfertaSchema = require('./EfetivarOfertaSchema');
 const SolicitarCotacaoSchema = require('./SolicitarCotacaoSchema');
 const FiltrarCotacaoSchema = require('./FiltrarCotacaoSchema');
+const ConsultarPdfPropostaSchema = require('./ConsultarPdfPropostaSchema');
 
 module.exports = {
   ConsultarVeiculoSchema,
@@ -13,5 +14,6 @@ module.exports = {
   SolicitarCotacaoSchema,
   EfetivarOfertaSchema,
   ConsultarPropostaSchema,
-  FiltrarCotacaoSchema
+  FiltrarCotacaoSchema,
+  ConsultarPdfPropostaSchema
 };
